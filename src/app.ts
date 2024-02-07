@@ -115,12 +115,9 @@ app.post("/leave-room", (req, res)=>{
         activeRooms[index].users.splice(index2, 1);
         const chatRoom = activeRooms[index];
         waitingRooms.push(chatRoom);
-        console.log(activeRooms.length, "active room");
-        console.log(waitingRooms.length, "waiting room");
         activeRooms.splice(index, 1);
         res.send(JSON.stringify({success: true}))
     }catch(e){
-        console.log(e);
         res.send(JSON.stringify({success: false}))
     }
 })
@@ -135,7 +132,6 @@ io.on("connection", (socket)=>{
 
     socket.on("disconnect", (data) => {
         for(let i = 0; i < activeRooms.length; i++){
-            console.log(activeRooms[i].users);
             if(activeRooms[i].users.length < 2){
                 socket.broadcast.emit("user_left_chat", activeRooms[i].room);
             }
