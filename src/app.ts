@@ -65,7 +65,7 @@ app.post("/create-room", (req, res)=>{
     if(waitingRooms.length === 0){
         const roomId = crypto.randomBytes(16).toString("hex");
         waitingRooms.push({
-            users: [{language: data.language}],
+            users: [{language: data.language, id: data.id}],
             room: roomId,
             active: false
         });
@@ -75,7 +75,7 @@ app.post("/create-room", (req, res)=>{
         if(index < 0){
             const roomId = crypto.randomBytes(16).toString("hex");
             waitingRooms.push({
-                users: [{user: data.user, language: data.language}],
+                users: [{language: data.language, id: data.id}],
                 room: roomId,
                 active: false
             });
@@ -83,7 +83,7 @@ app.post("/create-room", (req, res)=>{
         }else{
             const chatRoom = waitingRooms[index];
             waitingRooms.splice(index, 1);
-            chatRoom.users.push({language: data.language});
+            chatRoom.users.push({language: data.language, id: data.id});
             chatRoom.active = true;
             activeRooms.push(chatRoom);
             res.send(JSON.stringify({roomId: chatRoom.room, active: true}));
@@ -107,7 +107,7 @@ app.post("/leave-room", (req, res)=>{
         let index2 = -1;
         //@ts-ignore
         for(let i = 0; i < activeRooms[index].users.length; i++){
-            if((activeRooms[index].users[i].language === data.language) && (activeRooms[index].users[i].rooms === data.rooms)){
+            if((activeRooms[index].users[i].language === data.language) && (activeRooms[index].users[i].id === data.id)){
                 index2 = i;
                 break;
             }
@@ -158,7 +158,6 @@ io.on("connection", (socket)=>{
                 }else{
                     sendLanguage = activeRooms[i].users[0].language;
                 }
-                console.log(activeRooms[i].users)
                 break;
             }
         }
@@ -167,7 +166,6 @@ io.on("connection", (socket)=>{
            socket.to(data.room).emit("receive_message", message)
         }else{
             let responseMessage = await translateText(message, 'auto', sendLanguage)
-            console.log(responseMessage);
             socket.to(data.room).emit("receive_message", responseMessage)
         }
     })
