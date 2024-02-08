@@ -38,7 +38,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://studexplorer.vercel.app/',
+        origin: '*',
         methods: ["GET", "POST"]
     }
 });
