@@ -158,6 +158,8 @@ io.on("connection", (socket)=>{
                 }else{
                     sendLanguage = activeRooms[i].users[0].language;
                 }
+                console.log(activeRooms[i].users)
+                break;
             }
         }
 
@@ -165,6 +167,7 @@ io.on("connection", (socket)=>{
            socket.to(data.room).emit("receive_message", message)
         }else{
             let responseMessage = await translateText(message, 'auto', sendLanguage)
+            console.log(responseMessage);
             socket.to(data.room).emit("receive_message", responseMessage)
         }
     })
