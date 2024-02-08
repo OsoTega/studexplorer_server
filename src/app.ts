@@ -165,7 +165,7 @@ io.on("connection", (socket)=>{
         if(sendLanguage === language){
            socket.to(data.room).emit("receive_message", message)
         }else{
-            let responseMessage = await translateText(message, 'auto', sendLanguage)
+            let responseMessage = await translateText(message, language, sendLanguage)
             socket.to(data.room).emit("receive_message", responseMessage)
         }
     })
