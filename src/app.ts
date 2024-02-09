@@ -57,6 +57,8 @@ const findAvailableUser = (rooms: string[])=>{
     //         break;
     //     }
     // }
+    if(rooms.includes(waitingRooms[index].room)) return -1;
+
     return index;
 }
 
@@ -141,6 +143,14 @@ io.on("connection", (socket)=>{
     socket.on("leave_room", (data)=>{
         socket.leave(data);
         socket.broadcast.emit("left_chat", data)
+    })
+
+    socket.on("typing", async (data)=>{
+        socket.to(data.room).emit("user_typing", "typing");
+    })
+
+    socket.on("not_typing", async (data)=>{
+        socket.to(data.room).emit("user_not_typing", "typing");
     })
 
     socket.on("send_message", async (data)=>{
