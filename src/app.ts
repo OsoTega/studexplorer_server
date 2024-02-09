@@ -3,10 +3,24 @@ import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import webpush from "web-push";
 import http from 'http';
 import { Server } from 'socket.io';
 import crypto from 'crypto';
 import translate from "@iamtraction/google-translate";
+
+dotenv.config();
+
+const vapidKeys = {
+    publicKey: process.env.VAPID_PUBLIC_KEY,
+    privateKey: process.env.VAPID_PRIVATE_KEY,
+  };
+
+  webpush.setVapidDetails(
+    "test@gmail.com",
+    vapidKeys.publicKey,
+    vapidKeys.privateKey
+  )
 
 const translateText = async (text: string, fromLanguage = "auto", targetLanguage: string) => {
     try {
@@ -57,7 +71,7 @@ const findAvailableUser = (rooms: string[])=>{
     //         break;
     //     }
     // }
-    if(rooms.includes(waitingRooms[index].room)) return -1;
+    //if(rooms.includes(waitingRooms[index].room)) return -1;
 
     return index;
 }
