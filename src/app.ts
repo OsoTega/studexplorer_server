@@ -174,8 +174,12 @@ io.on("connection", (socket)=>{
     });
 
     socket.on("leave_room", (data)=>{
-        socket.leave(data);
-        socket.broadcast.emit("left_chat", data)
+        socket.leave(data.room);
+        if(data.exit){
+            socket.to(data.room).emit("user_left_chat", "left_chat");
+        }else{
+            socket.broadcast.emit("left_chat", data)
+        }
     })
 
     socket.on("typing", (data)=>{
