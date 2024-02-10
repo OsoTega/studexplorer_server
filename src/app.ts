@@ -156,12 +156,20 @@ io.on("connection", (socket)=>{
     })
 
     socket.on("disconnecting", (data) => {
-        console.log("Disconnected")
         const set = socket.rooms;
         if(set.size > 1){
             const socketRooms = Array.from(set.values());
             const room = socketRooms[socketRooms.length-1];
-            console.log(room)
+            socket.leave(room);
+            const waitingRoomIndex = waitingRooms.findIndex((element) => element.room === room);
+            if(waitingRoomIndex > -1){
+                waitingRooms.splice(waitingRoomIndex, 1)
+                socket.to(room).emit("user_left_chat", "left_chat");
+            }else{
+                const activeRoomIndex = activeRooms.findIndex((element) => element.room === room);
+                activeRooms.splice(activeRoomIndex, 1)
+                socket.to(room).emit("user_left_chat", "left_chat");
+            }
         }
     });
 
