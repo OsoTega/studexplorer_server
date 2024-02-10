@@ -156,11 +156,8 @@ io.on("connection", (socket)=>{
     })
 
     socket.on("disconnect", (data) => {
-        for(let i = 0; i < activeRooms.length; i++){
-            if(activeRooms[i].users.length < 2){
-                socket.broadcast.emit("user_left_chat", activeRooms[i].room);
-            }
-        }
+        console.log("Disconnected")
+        console.log(socket.rooms)
     });
 
     socket.on("leave_room", (data)=>{
