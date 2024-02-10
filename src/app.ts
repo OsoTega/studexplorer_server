@@ -155,7 +155,7 @@ io.on("connection", (socket)=>{
         socket.broadcast.emit("joined_chat", data)
     })
 
-    socket.on("disconnect", (data) => {
+    socket.on("disconnecting", (data) => {
         console.log("Disconnected")
         console.log(socket.rooms)
     });
