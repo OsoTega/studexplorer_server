@@ -64,6 +64,10 @@ const findAvailableUser = (rooms: string[])=>{
     if(waitingRooms.length > 0){
         index = Math.floor(Math.random() * (waitingRooms.length-1));
     }
+    waitingRooms.map((room)=>{
+        console.log(room.room)
+    });
+    console.log(waitingRooms.length);
     // for(let i = 0; i < activeRooms.length; i++){
     //     if(activeRooms[i].active === false && !rooms.includes(activeRooms[i].room) && activeRooms[i].users.length < 2){
     //         index = i;
@@ -132,6 +136,10 @@ app.post("/leave-room", (req, res)=>{
             const chatRoom = activeRooms[index];
             waitingRooms.push(chatRoom);
         }
+        waitingRooms.map((room)=>{
+            console.log(room.room)
+        });
+        console.log(waitingRooms.length);
         activeRooms.splice(index, 1);
         res.send(JSON.stringify({success: true}))
     }catch(e){
