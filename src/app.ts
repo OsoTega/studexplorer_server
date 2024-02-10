@@ -157,7 +157,12 @@ io.on("connection", (socket)=>{
 
     socket.on("disconnecting", (data) => {
         console.log("Disconnected")
-        console.log(socket.rooms)
+        const set = socket.rooms;
+        if(set.size > 1){
+            const socketRooms = Array.from(set.values());
+            const room = socketRooms[socketRooms.length-1];
+            console.log(room)
+        }
     });
 
     socket.on("leave_room", (data)=>{
