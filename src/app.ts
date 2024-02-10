@@ -128,8 +128,10 @@ app.post("/leave-room", (req, res)=>{
             }
         }
         activeRooms[index].users.splice(index2, 1);
-        const chatRoom = activeRooms[index];
-        waitingRooms.push(chatRoom);
+        if(data.exiting === false){
+            const chatRoom = activeRooms[index];
+            waitingRooms.push(chatRoom);
+        }
         activeRooms.splice(index, 1);
         res.send(JSON.stringify({success: true}))
     }catch(e){
